@@ -1,10 +1,10 @@
-export const DEBUG = 0;
-export const INFO = 1;
-export const WARN = 2;
-export const ERROR = 3;
-export const FATAL = 4;
+exports.DEBUG = 0;
+exports.INFO = 1;
+exports.WARN = 2;
+exports.ERROR = 3;
+exports.FATAL = 4;
 
-export const LOG_LEVELS_TRANSLATION =
+exports.LOG_LEVELS_TRANSLATION =
     [
       'debug',
       'info',

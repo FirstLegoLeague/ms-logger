@@ -1,4 +1,4 @@
-const logLevels = require('logLevels');
+const logLevels = require('./logLevels');
 
 function Logger(moduleName) {
 
@@ -7,6 +7,7 @@ function Logger(moduleName) {
     }
 
     this.moduleName = moduleName;
+    this.logLevels = logLevels;
     this.setLogLevel(logLevels.DEBUG);
 }
 
@@ -19,7 +20,7 @@ Logger.prototype.writeLog = function (level, correlationId, message) {
         return;
     }
 
-    let formattedLog = this.formatLog(level, this.moduleName, Date.now(), correlationId, message);
+    let formattedLog = this.formatLog(level, this.moduleName, new Date(Date.now()), correlationId, message);
     console.log(JSON.stringify(formattedLog) + '\n');
 };
 
@@ -58,6 +59,5 @@ Logger.prototype.fatal = function (correlationId, message) {
     this.writeLog(logLevels.FATAL, correlationId, message);
 };
 
-Logger.logLevels = logLevels;
 
-export default Logger;
+module.exports = Logger;
