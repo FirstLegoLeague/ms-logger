@@ -1,4 +1,4 @@
-const logLevels = require('./logLevels');
+const LOG_LOVELS = require('./log_levels');
 
 function Logger(moduleName) {
 
@@ -7,15 +7,15 @@ function Logger(moduleName) {
     }
 
     this.moduleName = moduleName;
-    this.logLevels = logLevels;
-    this.setLogLevel(logLevels.DEBUG);
+    this.LOG_LEVELS = LOG_LOVELS;
+    this.setLogLevel(LOG_LOVELS.DEBUG);
 }
 
 Logger.prototype.setLogLevel = function (logLevel) {
     this.logLevel = logLevel;
 };
 
-Logger.prototype.writeLog = function (level, correlationId, message) {
+Logger.prototype.log = function (level, correlationId, message) {
     if (level < this.logLevel) {
         return;
     }
@@ -31,7 +31,7 @@ Logger.prototype.formatLog = function (level, moduleName, timestamp, correlation
     }
 
     return {
-        "level": logLevels.LOG_LEVELS_TRANSLATION[level],
+        "level": LOG_LOVELS.LOG_LEVELS_TRANSLATION[level],
         "module": moduleName,
         "timestamp": timestamp.toISOString(),
         "correlationId": correlationId,
@@ -40,23 +40,23 @@ Logger.prototype.formatLog = function (level, moduleName, timestamp, correlation
 };
 
 Logger.prototype.debug = function (correlationId, message) {
-    this.writeLog(logLevels.DEBUG, correlationId, message);
+    this.log(LOG_LOVELS.DEBUG, correlationId, message);
 };
 
 Logger.prototype.info = function (correlationId, message) {
-    this.writeLog(logLevels.INFO, correlationId, message);
+    this.log(LOG_LOVELS.INFO, correlationId, message);
 };
 
 Logger.prototype.error = function (correlationId, message) {
-    this.writeLog(logLevels.ERROR, correlationId, message);
+    this.log(LOG_LOVELS.ERROR, correlationId, message);
 };
 
 Logger.prototype.warn = function (correlationId, message) {
-    this.writeLog(logLevels.WARN, correlationId, message)
+    this.log(LOG_LOVELS.WARN, correlationId, message)
 };
 
 Logger.prototype.fatal = function (correlationId, message) {
-    this.writeLog(logLevels.FATAL, correlationId, message);
+    this.log(LOG_LOVELS.FATAL, correlationId, message);
 };
 
 
