@@ -30,7 +30,7 @@ Logger.prototype.formatLog = function (level, moduleName, timestamp, correlation
     }
 
     return {
-        "level": level,
+        "level": logLevels.LOG_LEVELS_TRANSLATION[level],
         "module": moduleName,
         "timestamp": timestamp.toISOString(),
         "correlationId": correlationId,
