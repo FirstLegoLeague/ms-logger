@@ -6,7 +6,7 @@
   "repository": "git@github.com:FirstLegoLeagueIL/Logger.git",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint **/*.js",
+    "lint": "eslint lib/**/*.js",
     "lint:fix": "yarn run lint -- --fix"
   },
   "devDependencies": {
