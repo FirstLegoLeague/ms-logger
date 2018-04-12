@@ -5,8 +5,8 @@ The logs are written as described in the modules standard [here](https://github.
 #### Simple usage
 Add the logger module, and give the name of the module that using the logger.
 
-    const logger = require('firstlegoleaguelogger');  
-	logger('MODULE_NAME');
+    const logger_module = require('firstlegoleaguelogger');
+	let logger = logger_module('MODULE_NAME');
 
 use `logger.setLogLevel(LOG_LEVEL)` to set the minimum log level to be printed.
 use `logger.LEVELNAME` to write to the log.
