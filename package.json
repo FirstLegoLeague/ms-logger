@@ -21,5 +21,8 @@
     "jsonfile": "^4.0.0",
     "path": "^0.12.7",
     "yamljs": "^0.3.0"
+  },
+  "peerDependencies": {
+    "@first-lego-league/ms-correlation": "^0.0.1"
   }
 }
