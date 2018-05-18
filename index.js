@@ -1,3 +1,4 @@
 'use strict'
 
-module.exports = require('./lib/logger').Logger
+exports.Logger = require('./lib/logger').Logger
+exports.middleware = require('./lib/middleware').middleware
