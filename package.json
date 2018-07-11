@@ -5,6 +5,9 @@
   "author": "Tal Taub",
   "repository": "git@github.com:FirstLegoLeagueIL/Logger.git",
   "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "lint": "eslint lib/**/*.js",
     "lint:fix": "yarn run lint -- --fix"
@@ -18,11 +21,8 @@
     "eslint-plugin-standard": "^3.0.1"
   },
   "dependencies": {
-    "jsonfile": "^4.0.0",
     "on-finished": "^2.3.0",
-    "on-headers": "^1.0.1",
-    "path": "^0.12.7",
-    "yamljs": "^0.3.0"
+    "on-headers": "^1.0.1"
   },
   "peerDependencies": {
     "@first-lego-league/ms-correlation": "^0.0.1"
