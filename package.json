@@ -21,6 +21,7 @@
     "eslint-plugin-standard": "^3.0.1"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "on-finished": "^2.3.0",
     "on-headers": "^1.0.1"
   },
