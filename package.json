@@ -1,6 +1,7 @@
 {
   "name": "@first-lego-league/ms-logger",
   "version": "1.4.1",
+  "description": "Logger for FIRST Lego League System Moduels",
   "main": "index.js",
   "author": "Tal Taub",
   "repository": "git@github.com:FirstLegoLeagueIL/Logger.git",
@@ -9,21 +10,33 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "lint": "eslint lib/**/*.js",
-    "lint:fix": "yarn run lint -- --fix"
+    "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
+    "lint": "eslint --ext .js ./",
+    "lint:fix": "eslint --ext .js --fix ./"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "@first-lego-league/eslint-config": "^1.0.0",
+    "@first-lego-league/ms-correlation": "^0.0.1",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-chai-expect": "^2.0.1",
+    "eslint-plugin-chai-friendly": "^0.4.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha": "^6.0.2",
+    "moxios": "^0.4.0",
+    "nyc": "^13.3.0",
+    "proxyquire": "^2.1.0"
   },
   "dependencies": {
-    "express": "^4.16.3",
     "on-finished": "^2.3.0",
-    "on-headers": "^1.0.1"
+    "on-headers": "^1.0.1",
+    "router": "^1.3.3"
   },
   "peerDependencies": {
     "@first-lego-league/ms-correlation": "^0.0.1"
