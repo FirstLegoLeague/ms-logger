@@ -1,11 +1,11 @@
 {
   "name": "@first-lego-league/ms-logger",
   "version": "1.4.1",
-  "description": "Logger for FIRST Lego League System Moduels",
+  "description": "Logger for FIRST Lego League System Modules",
   "main": "index.js",
   "author": "Tal Taub",
   "repository": "git@github.com:FirstLegoLeagueIL/Logger.git",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=6.0.0"
   },
@@ -33,6 +33,7 @@
     "moxios": "^0.4.0",
     "nyc": "^13.3.0",
     "proxyquire": "^2.1.0",
+    "sinon": "^7.3.2",
     "supertest": "^4.0.2"
   },
   "dependencies": {

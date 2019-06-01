@@ -1,4 +1,5 @@
 const chai = require('chai')
+const sinon = require('sinon')
 const spies = require('chai-spies')
 const proxyquire = require('proxyquire')
 const path = require('path')
@@ -26,34 +27,32 @@ describe('Logger', () => {
   })
 
   it('has a default level of DEBUG', () => {
-    expect(Logger().logLevel).to.equal(LOG_LEVELS.DEBUG)
+    expect(Logger().getLogLevel()).to.equal(LOG_LEVELS.DEBUG)
   })
 
-  describe('set log level', () => {
-    it('sets the log level if its valid', () => {
-      const logger = Logger()
-      logger.setLogLevel(LOG_LEVELS.INFO)
-      expect(logger.logLevel).to.equal(LOG_LEVELS.INFO)
-    })
+  it('sets the log level if its valid', () => {
+    const logger = Logger()
+    logger.setLogLevel(LOG_LEVELS.INFO)
+    expect(logger.getLogLevel()).to.equal(LOG_LEVELS.INFO)
+  })
 
-    it('throws an error if the log level is not one of the allowed log levels', () => {
-      const logger = Logger()
-      expect(() => logger.setLogLevel(-5)).to.throw()
-    })
+  it('throws an error if the log level is not one of the allowed log levels', () => {
+    const logger = Logger()
+    expect(() => logger.setLogLevel(-5)).to.throw()
   })
 
   describe('log', () => {
     const sandbox = chai.spy.sandbox()
-    const originalDateNow = Date.now
+    let clock
 
     beforeEach(() => {
       sandbox.on(console, ['log'])
-      Date.now = () => MOCK_DATE
+      clock = sinon.useFakeTimers(MOCK_DATE)
     })
 
     afterEach(() => {
       sandbox.restore()
-      Date.now = originalDateNow
+      clock.restore()
     })
 
     it('does not log if the level is lower then the logger\'s level', () => {
@@ -67,14 +66,14 @@ describe('Logger', () => {
       const logger = Logger()
       logger.setLogLevel(LOG_LEVELS.WARN)
       logger.log(LOG_LEVELS.WARN, 'Some Log')
-      expect(console.log).to.have.been.called.exactly(1)
+      expect(console.log).to.have.been.called.once
     })
 
     it('logs if the level is higher then the logger\'s level', () => {
       const logger = Logger()
       logger.setLogLevel(LOG_LEVELS.WARN)
       logger.log(LOG_LEVELS.FATAL, 'Some Log')
-      expect(console.log).to.have.been.called.exactly(1)
+      expect(console.log).to.have.been.called.once
     })
 
     it('logs the formatter log according the logger\'s value formatting method', () => {
@@ -117,53 +116,43 @@ describe('Logger', () => {
     })
   })
 
-  describe('debug', () => {
-    it('calls the logging function with debug level', () => {
-      const logger = new Logger()
-      const message = 'message'
-      logger.log = chai.spy(() => { })
-      logger.debug(message)
-      expect(logger.log).to.have.been.called.with(LOG_LEVELS.DEBUG, message)
-    })
+  it('debug calls the logging function with debug level', () => {
+    const logger = new Logger()
+    const message = 'message'
+    logger.log = chai.spy(() => { })
+    logger.debug(message)
+    expect(logger.log).to.have.been.called.with(LOG_LEVELS.DEBUG, message)
   })
 
-  describe('info', () => {
-    it('calls the logging function with info level', () => {
-      const logger = new Logger()
-      const message = 'message'
-      logger.log = chai.spy(() => { })
-      logger.info(message)
-      expect(logger.log).to.have.been.called.with(LOG_LEVELS.INFO, message)
-    })
+  it('info calls the logging function with info level', () => {
+    const logger = new Logger()
+    const message = 'message'
+    logger.log = chai.spy(() => { })
+    logger.info(message)
+    expect(logger.log).to.have.been.called.with(LOG_LEVELS.INFO, message)
   })
 
-  describe('warn', () => {
-    it('calls the logging function with warn level', () => {
-      const logger = new Logger()
-      const message = 'message'
-      logger.log = chai.spy(() => { })
-      logger.warn(message)
-      expect(logger.log).to.have.been.called.with(LOG_LEVELS.WARN, message)
-    })
+  it('warn calls the logging function with warn level', () => {
+    const logger = new Logger()
+    const message = 'message'
+    logger.log = chai.spy(() => { })
+    logger.warn(message)
+    expect(logger.log).to.have.been.called.with(LOG_LEVELS.WARN, message)
   })
 
-  describe('error', () => {
-    it('calls the logging function with error level', () => {
-      const logger = new Logger()
-      const message = 'message'
-      logger.log = chai.spy(() => { })
-      logger.error(message)
-      expect(logger.log).to.have.been.called.with(LOG_LEVELS.ERROR, message)
-    })
+  it('error calls the logging function with error level', () => {
+    const logger = new Logger()
+    const message = 'message'
+    logger.log = chai.spy(() => { })
+    logger.error(message)
+    expect(logger.log).to.have.been.called.with(LOG_LEVELS.ERROR, message)
   })
 
-  describe('fatal', () => {
-    it('calls the logging function with fatal level', () => {
-      const logger = new Logger()
-      const message = 'message'
-      logger.log = chai.spy(() => { })
-      logger.fatal(message)
-      expect(logger.log).to.have.been.called.with(LOG_LEVELS.FATAL, message)
-    })
+  it('fatal calls the logging function with fatal level', () => {
+    const logger = new Logger()
+    const message = 'message'
+    logger.log = chai.spy(() => { })
+    logger.fatal(message)
+    expect(logger.log).to.have.been.called.with(LOG_LEVELS.FATAL, message)
   })
 })

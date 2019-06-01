@@ -44,53 +44,53 @@ describe('middleware', () => {
   })
 
   describe('endpoint', () => {
-    it('only logs a log request once', done => {
-      request(app)
+    it('only logs a log request once', () => {
+      return request(app)
         .post('/log/debug')
         .send({ message })
-        .expect(201, () => {
-          expect(mockLogger.log).to.have.been.called.exactly(1)
-          done()
+        .expect(201)
+        .then(() => {
+          expect(mockLogger.log).to.have.been.called.once
         })
     })
 
-    it('logs with the correct level', done => {
-      request(app)
+    it('logs with the correct level', () => {
+      return request(app)
         .post('/log/warn')
         .send({ message })
-        .expect(201, () => {
+        .expect(201)
+        .then(() => {
           expect(mockLogger.debug).to.not.have.been.called()
           expect(mockLogger.info).to.not.have.been.called()
           expect(mockLogger.warn).to.have.been.called()
           expect(mockLogger.error).to.not.have.been.called()
           expect(mockLogger.fatal).to.not.have.been.called()
-          done()
         })
     })
 
-    it('logs with info if the level does not exist', done => {
-      request(app)
+    it('logs with info if the level does not exist', () => {
+      return request(app)
         .post('/log/some_level')
         .send({ message })
-        .expect(201, () => {
+        .expect(201)
+        .then(() => {
           expect(mockLogger.debug).to.not.have.been.called()
           expect(mockLogger.info).to.have.been.called()
           expect(mockLogger.warn).to.not.have.been.called()
           expect(mockLogger.error).to.not.have.been.called()
           expect(mockLogger.fatal).to.not.have.been.called()
-          done()
         })
     })
 
-    it('responds with 500 if the log throws an error', done => {
+    it('responds with 500 if the log throws an error', () => {
       const originalInfo = mockLogger.info
       mockLogger.info = () => { throw new Error('some error') }
-      request(app)
+      return request(app)
         .post('/log/info')
         .send({ message })
-        .expect(500, () => {
+        .expect(500)
+        .then(() => {
           mockLogger.info = originalInfo
-          done()
         })
     })
   })
@@ -102,58 +102,58 @@ describe('middleware', () => {
       app.use((req, res) => res.sendStatus(status))
     })
 
-    it('only logs the request once', done => {
-      request(app)
+    it('only logs the request once', () => {
+      return request(app)
         .post('/some_path')
         .send({ message })
-        .expect(status, () => {
-          expect(mockLogger.log).to.have.been.called.exactly(1)
-          done()
+        .expect(status)
+        .then(() => {
+          expect(mockLogger.log).to.have.been.called.once
         })
     })
 
-    it('logs in debug level if the status is a successful one', done => {
-      request(app)
+    it('logs in debug level if the status is a successful one', () => {
+      return request(app)
         .get('/some_path')
-        .expect(status, () => {
+        .expect(status)
+        .then(() => {
           expect(mockLogger.debug).to.have.been.called()
           expect(mockLogger.info).to.not.have.been.called()
           expect(mockLogger.warn).to.not.have.been.called()
           expect(mockLogger.error).to.not.have.been.called()
           expect(mockLogger.fatal).to.not.have.been.called()
-          done()
         })
     })
 
-    it('logs in warn level if the status is client fault', done => {
+    it('logs in warn level if the status is client fault', () => {
       status = 400
-      request(app)
+      return request(app)
         .get('/some_path')
-        .expect(status, () => {
+        .expect(status)
+        .then(() => {
           expect(mockLogger.debug).to.not.have.been.called()
           expect(mockLogger.info).to.not.have.been.called()
           expect(mockLogger.warn).to.have.been.called()
           expect(mockLogger.error).to.not.have.been.called()
           expect(mockLogger.fatal).to.not.have.been.called()
-          done()
         })
     })
 
-    it('logs in error level if the status is server fault', done => {
+    it('logs in error level if the status is server fault', () => {
       status = 500
-      request(app)
+      return request(app)
         .get('/some_path')
-        .expect(status, () => {
+        .expect(status)
+        .then(() => {
           expect(mockLogger.debug).to.not.have.been.called()
           expect(mockLogger.info).to.not.have.been.called()
           expect(mockLogger.warn).to.not.have.been.called()
           expect(mockLogger.error).to.have.been.called()
           expect(mockLogger.fatal).to.not.have.been.called()
-          done()
         })
     })
 
-    it('only calls Logger creation once', done => {
+    it('only calls Logger creation once', () => {
       const originalMockLogger = MockLogger
       MockLogger = chai.spy(MockLogger)
       app = express()
@@ -164,12 +164,12 @@ describe('middleware', () => {
       app.use(middleware)
       app.use((req, res) => res.sendStatus(status))
 
-      request(app)
+      return request(app)
         .get('/some_path')
-        .expect(status, () => {
+        .expect(status)
+        .then(() => {
           expect(MockLogger).to.not.have.been.called()
           MockLogger = originalMockLogger
-          done()
         })
     })
 
@@ -184,39 +184,39 @@ describe('middleware', () => {
         mockLogger.debug = originalDebug
       })
 
-      it('contains the request method in captial letters when the method is get', done => {
-        request(app)
+      it('contains the request method in captial letters when the method is get', () => {
+        return request(app)
           .get('/some_path')
-          .expect(status, () => {
+          .expect(status)
+          .then(() => {
             expect(logMessage.includes('GET')).to.equal(true)
-            done()
           })
       })
 
-      it('contains the request method in captial letters when the method is post', done => {
-        request(app)
+      it('contains the request method in captial letters when the method is post', () => {
+        return request(app)
           .post('/some_path')
-          .expect(status, () => {
+          .expect(status)
+          .then(() => {
             expect(logMessage.includes('POST')).to.equal(true)
-            done()
           })
       })
 
-      it('contains the request path', done => {
-        request(app)
+      it('contains the request path', () => {
+        return request(app)
           .get('/some_path')
-          .expect(status, () => {
+          .expect(status)
+          .then(() => {
             expect(logMessage.includes('/some_path')).to.equal(true)
-            done()
           })
       })
 
-      it('contains the request status code', done => {
-        request(app)
+      it('contains the request status code', () => {
+        return request(app)
           .get('/some_path')
-          .expect(status, () => {
+          .expect(status)
+          .then(() => {
             expect(logMessage.includes(status)).to.equal(true)
-            done()
           })
       })
     })
