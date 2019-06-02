@@ -97,9 +97,20 @@ describe('middleware', () => {
 
   describe('middleware', () => {
     let status
+    let logMessage
+    const originalDebug = mockLogger.debug
+
     beforeEach(() => {
       status = 200
       app.use((req, res) => res.sendStatus(status))
+      mockLogger.debug = chai.spy(msg => {
+        logMessage = msg
+        originalDebug.call(this, arguments)
+      })
+    })
+
+    afterEach(() => {
+      mockLogger.debug = originalDebug
     })
 
     it('only logs the request once', () => {
@@ -173,52 +184,40 @@ describe('middleware', () => {
         })
     })
 
-    describe('log message', () => {
-      let logMessage
-      const originalDebug = mockLogger.debug
-      beforeEach(() => {
-        mockLogger.debug = msg => { logMessage = msg }
-      })
+    it('log message contains the request method in captial letters when the method is get', () => {
+      return request(app)
+        .get('/some_path')
+        .expect(status)
+        .then(() => {
+          expect(logMessage.includes('GET')).to.equal(true)
+        })
+    })
 
-      afterEach(() => {
-        mockLogger.debug = originalDebug
-      })
+    it('log message contains the request method in captial letters when the method is post', () => {
+      return request(app)
+        .post('/some_path')
+        .expect(status)
+        .then(() => {
+          expect(logMessage.includes('POST')).to.equal(true)
+        })
+    })
 
-      it('contains the request method in captial letters when the method is get', () => {
-        return request(app)
-          .get('/some_path')
-          .expect(status)
-          .then(() => {
-            expect(logMessage.includes('GET')).to.equal(true)
-          })
-      })
+    it('log message contains the request path', () => {
+      return request(app)
+        .get('/some_path')
+        .expect(status)
+        .then(() => {
+          expect(logMessage.includes('/some_path')).to.equal(true)
+        })
+    })
 
-      it('contains the request method in captial letters when the method is post', () => {
-        return request(app)
-          .post('/some_path')
-          .expect(status)
-          .then(() => {
-            expect(logMessage.includes('POST')).to.equal(true)
-          })
-      })
-
-      it('contains the request path', () => {
-        return request(app)
-          .get('/some_path')
-          .expect(status)
-          .then(() => {
-            expect(logMessage.includes('/some_path')).to.equal(true)
-          })
-      })
-
-      it('contains the request status code', () => {
-        return request(app)
-          .get('/some_path')
-          .expect(status)
-          .then(() => {
-            expect(logMessage.includes(status)).to.equal(true)
-          })
-      })
+    it('log message contains the request status code', () => {
+      return request(app)
+        .get('/some_path')
+        .expect(status)
+        .then(() => {
+          expect(logMessage.includes(status)).to.equal(true)
+        })
     })
   })
 })

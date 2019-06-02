@@ -22,23 +22,19 @@ const { Logger } = proxyquire('../../lib/logger', {
 })
 
 describe('Logger', () => {
-  it('returns a logger even if not called as a constructor', () => {
-    expect(Logger() instanceof Logger).to.equal(true)
-  })
-
   it('has a default level of DEBUG', () => {
-    expect(Logger().getLogLevel()).to.equal(LOG_LEVELS.DEBUG)
+    expect(new Logger().logLevel).to.equal(LOG_LEVELS.DEBUG)
   })
 
   it('sets the log level if its valid', () => {
-    const logger = Logger()
-    logger.setLogLevel(LOG_LEVELS.INFO)
-    expect(logger.getLogLevel()).to.equal(LOG_LEVELS.INFO)
+    const logger = new Logger()
+    logger.logLevel = LOG_LEVELS.INFO
+    expect(logger.logLevel).to.equal(LOG_LEVELS.INFO)
   })
 
   it('throws an error if the log level is not one of the allowed log levels', () => {
-    const logger = Logger()
-    expect(() => logger.setLogLevel(-5)).to.throw()
+    const logger = new Logger()
+    expect(() => { logger.logLevel = -5 }).to.throw()
   })
 
   describe('log', () => {
@@ -56,63 +52,38 @@ describe('Logger', () => {
     })
 
     it('does not log if the level is lower then the logger\'s level', () => {
-      const logger = Logger()
-      logger.setLogLevel(LOG_LEVELS.WARN)
+      const logger = new Logger()
+      logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.INFO, 'Some Log')
       expect(console.log).to.not.have.been.called()
     })
 
     it('logs if the level is equal to the logger\'s level', () => {
-      const logger = Logger()
-      logger.setLogLevel(LOG_LEVELS.WARN)
+      const logger = new Logger()
+      logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.WARN, 'Some Log')
       expect(console.log).to.have.been.called.once
     })
 
     it('logs if the level is higher then the logger\'s level', () => {
-      const logger = Logger()
-      logger.setLogLevel(LOG_LEVELS.WARN)
+      const logger = new Logger()
+      logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.FATAL, 'Some Log')
       expect(console.log).to.have.been.called.once
     })
 
     it('logs the formatter log according the logger\'s value formatting method', () => {
-      const logger = Logger()
-      logger.formatLog = chai.spy(() => { })
-      const message = 'MESSAGE'
-      logger.log(LOG_LEVELS.DEBUG, message)
-      expect(logger.formatLog).to.have.been.called.with(LOG_LEVELS.DEBUG, MODULE_NAME, CORRELATION_ID, new Date(MOCK_DATE), message)
-    })
-
-    it('logs to console the stringified output json of the logger\'s formatting method', () => {
-      const logger = Logger()
-      const formttedLog = { field1: 'some field', fields2: 'some field2' }
-      const stringifiedFormttedLog = JSON.stringify(formttedLog)
-      logger.formatLog = () => (formttedLog)
-      logger.log(LOG_LEVELS.DEBUG, 'message')
-      expect(console.log).to.have.been.called.with(stringifiedFormttedLog)
-    })
-  })
-
-  describe('log formatting', () => {
-    it('throws an error if timestamp is not a date', () => {
       const logger = new Logger()
-      expect(logger.formatLog).to.throw()
-    })
-
-    it('returns a correctly structures object', () => {
-      const logger = new Logger()
-      const level = LOG_LEVELS.DEBUG
-      const timestamp = new Date(MOCK_DATE)
-      const message = 'message'
-
-      expect(logger.formatLog(level, MODULE_NAME, CORRELATION_ID, timestamp, message)).to.eql({
-        'timestamp': timestamp.toISOString(),
-        'level': LOG_LEVELS.LOG_LEVELS_TRANSLATION[level],
+      const logJson = {
+        'timestamp': new Date(MOCK_DATE).toISOString(),
+        'level': LOG_LEVELS.LOG_LEVELS_TRANSLATION[LOG_LEVELS.DEBUG],
         'module': MODULE_NAME,
         'correlationId': CORRELATION_ID,
         'message': 'message'
-      })
+      }
+      const stringifiedFormttedLog = JSON.stringify(logJson)
+      logger.log(LOG_LEVELS.DEBUG, 'message')
+      expect(console.log).to.have.been.called.with(stringifiedFormttedLog)
     })
   })
 
