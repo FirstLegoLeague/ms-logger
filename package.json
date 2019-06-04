@@ -6,6 +6,14 @@
   "author": "Tal Taub",
   "repository": "git@github.com:FirstLegoLeagueIL/Logger.git",
   "license": "GPL-3.0",
+  "files": [
+    "index.js",
+    "lib/**/*.js",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "yarn.lock"
+  ],
   "engines": {
     "node": ">=6.0.0"
   },
