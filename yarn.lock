@@ -95,11 +95,12 @@
   resolved "https://registry.yarnpkg.com/@first-lego-league/eslint-config/-/eslint-config-1.0.0.tgz#897677bf32a4ea842bbf4e3a63b225d6a044d4a4"
   integrity sha512-FYWnInc/zvbnV794tOhQS44qVVi4d9XJkJRWiZo7luWmwkJg8evP+vi7623klw7UrSsPv8q8J1nSHllh3ks4UQ==
 
-"@first-lego-league/ms-correlation@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@first-lego-league/ms-correlation/-/ms-correlation-0.0.1.tgz#2e4f3c77d9d8a9bebac326fb24e1e16aa6423fef"
-  integrity sha512-8bB48v0qXLxfH3r3E1BN5thzYOD0lnVcw4xtZ0NOulShMiQz/sXZsT2k/8co0E+O8fgpyfNDdveeX8+vitjy1g==
+"@first-lego-league/ms-correlation@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@first-lego-league/ms-correlation/-/ms-correlation-1.0.0.tgz#0c032a3c33739aed8008fdc60996a46c359de44c"
+  integrity sha512-tKMjDHSeWRj3aYDtOc3tbHzlwiwr5zBx5yZ0uwbn1b1Gc0U8xH9hWiQuve6haA6p0/IVyov3wXwHK2CuwTupSA==
   dependencies:
+    cookie "^0.3.1"
     jsonwebtoken "^8.2.1"
     randomatic "^3.0.0"
 
@@ -466,6 +467,11 @@ cookie@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
   integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
+
+cookie@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
+  integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
 
 cookiejar@^2.1.0:
   version "2.1.2"
