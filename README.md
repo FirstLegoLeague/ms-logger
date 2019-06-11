@@ -1,28 +1,51 @@
 ## FIRST Lego League Logger
-This npm module is used to write loges in any of the FIRST Lego League Scoring System modules.
-The logs are written as described in the modules standard [here](https://github.com/FirstLegoLeagueIL/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#log-messages).
+A simple logger object used to write logs according to the _FIRST_ LEGO League TMS [Module Standard](https://github.com/FirstLegoLeagueIL/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#log-messages). The logger was meant to be used by node servers.
 
-#### Simple usage
-Add the logger module, and give the name of the module that using the logger.
+### Usage
+There are two ways to use the module.
 
-    const logger_module = require('firstlegoleaguelogger');
-	let logger = logger_module('MODULE_NAME');
+#### Create a logger directly
+```javascript
+// import the logger
+const { Logger } = require('@first-lego-league/ms-logger')
 
-use `logger.setLogLevel(LOG_LEVEL)` to set the minimum log level to be printed.
-use `logger.LEVELNAME` to write to the log.
-The levels are described in the modules standard.
+// Create a new instance
+const logger = new Logger()
 
-### Development
-1. Fork this repository
-2. make some changes
-3. create a Pull Request
-4. Wait for a CR from the code owner
-5. make sure everything is well
-6. merge
+// Use the logger with the direct log method
+// Passing to it the level and message
+logger.log(logger.LOG_LEVELS.DEBUG, 'some message')
+// Or use the level method directly
+logger.debug('some message')
+```
 
-A few things to notice while developing:
-* Use `yarn` not `npm`
-* Follow javascript standard as described [here](https://standardjs.com/)
-* Keep the package lightweight and easy to use
-* Don't break API if not neccessary
-* Be creative and have fun
+Available levels are: `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`
+
+When you try to write a log, the logger only logs it if the message's level is higher then the log's `logLevel`. You can access the `logLevel` proeperty like this:
+```javascript
+const { Logger } = require('@first-lego-league/ms-logger')
+
+const logger = new Logger()
+logger.logLevel = logger.LOG_LEVELS.WARN
+console.log(logger.logLevel) // 2
+```
+
+#### Use the node middleware
+```javascript
+const { loggerMiddleware } = require('@first-lego-league/ms-logger')
+const app = require('express')()
+
+app.use(loggerMiddleware)
+```
+
+This adds a double functionality:
+1. Each HTTP request to pass through this middleware will be logged, together with its method, URL, the time it took, its issuer and its status code.
+2. You can now request from the server to log using HTTP POST to the `/log/:level` endpoint:
+	`POST http://server/log/debug message="some message"`.
+	The server responds with a 201 on success and a 500 on failure.
+
+### Contribution
+To contribute to this repository, simply create a PR and set one of the Code Owners to be a reviewer.
+Please notice the linting and UT, because they block merge.
+Keep the package lightweight and easy to use.
+Thank you for contributing!
