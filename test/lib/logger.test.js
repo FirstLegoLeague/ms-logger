@@ -1,11 +1,11 @@
 const chai = require('chai')
 const sinon = require('sinon')
-const spies = require('chai-spies')
+const sinonChai = require('sinon-chai')
 const proxyquire = require('proxyquire')
 const path = require('path')
 
 const expect = chai.expect
-chai.use(spies)
+chai.use(sinonChai)
 
 const CORRELATION_ID = 'CORRELATION_ID'
 const MODULE_NAME = path.basename(path.resolve())
@@ -38,16 +38,15 @@ describe('Logger', () => {
   })
 
   describe('log', () => {
-    const sandbox = chai.spy.sandbox()
     let clock
 
     beforeEach(() => {
-      sandbox.on(console, ['log'])
+      sinon.stub(console, 'log')
       clock = sinon.useFakeTimers(MOCK_DATE)
     })
 
     afterEach(() => {
-      sandbox.restore()
+      console.log.restore()
       clock.restore()
     })
 
@@ -55,21 +54,21 @@ describe('Logger', () => {
       const logger = new Logger()
       logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.INFO, 'Some Log')
-      expect(console.log).to.not.have.been.called()
+      expect(console.log).to.not.have.been.called
     })
 
     it('logs if the level is equal to the logger\'s level', () => {
       const logger = new Logger()
       logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.WARN, 'Some Log')
-      expect(console.log).to.have.been.called.once
+      expect(console.log).to.have.been.calledOnce
     })
 
     it('logs if the level is higher then the logger\'s level', () => {
       const logger = new Logger()
       logger.logLevel = LOG_LEVELS.WARN
       logger.log(LOG_LEVELS.FATAL, 'Some Log')
-      expect(console.log).to.have.been.called.once
+      expect(console.log).to.have.been.calledOnce
     })
 
     it('logs the formatter log according the logger\'s value formatting method', () => {
@@ -83,47 +82,47 @@ describe('Logger', () => {
       }
       const stringifiedFormttedLog = JSON.stringify(logJson)
       logger.log(LOG_LEVELS.DEBUG, 'message')
-      expect(console.log).to.have.been.called.with(stringifiedFormttedLog)
+      expect(console.log).to.have.been.calledWith(stringifiedFormttedLog)
     })
   })
 
   it('debug calls the logging function with debug level', () => {
     const logger = new Logger()
     const message = 'message'
-    logger.log = chai.spy(() => { })
+    logger.log = sinon.spy()
     logger.debug(message)
-    expect(logger.log).to.have.been.called.with(LOG_LEVELS.DEBUG, message)
+    expect(logger.log).to.have.been.calledWith(LOG_LEVELS.DEBUG, message)
   })
 
   it('info calls the logging function with info level', () => {
     const logger = new Logger()
     const message = 'message'
-    logger.log = chai.spy(() => { })
+    logger.log = sinon.spy(() => { })
     logger.info(message)
-    expect(logger.log).to.have.been.called.with(LOG_LEVELS.INFO, message)
+    expect(logger.log).to.have.been.calledWith(LOG_LEVELS.INFO, message)
   })
 
   it('warn calls the logging function with warn level', () => {
     const logger = new Logger()
     const message = 'message'
-    logger.log = chai.spy(() => { })
+    logger.log = sinon.spy(() => { })
     logger.warn(message)
-    expect(logger.log).to.have.been.called.with(LOG_LEVELS.WARN, message)
+    expect(logger.log).to.have.been.calledWith(LOG_LEVELS.WARN, message)
   })
 
   it('error calls the logging function with error level', () => {
     const logger = new Logger()
     const message = 'message'
-    logger.log = chai.spy(() => { })
+    logger.log = sinon.spy(() => { })
     logger.error(message)
-    expect(logger.log).to.have.been.called.with(LOG_LEVELS.ERROR, message)
+    expect(logger.log).to.have.been.calledWith(LOG_LEVELS.ERROR, message)
   })
 
   it('fatal calls the logging function with fatal level', () => {
     const logger = new Logger()
     const message = 'message'
-    logger.log = chai.spy(() => { })
+    logger.log = sinon.spy(() => { })
     logger.fatal(message)
-    expect(logger.log).to.have.been.called.with(LOG_LEVELS.FATAL, message)
+    expect(logger.log).to.have.been.calledWith(LOG_LEVELS.FATAL, message)
   })
 })
