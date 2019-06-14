@@ -1,7 +1,7 @@
 [![npm](https://img.shields.io/npm/v/@first-lego-league/ms-logger.svg)](https://www.npmjs.com/package/@first-lego-league/ms-logger)
 [![David Dependency Status](https://david-dm.org/FirstLegoLeague/ms-logger.svg)](https://david-dm.org/FirstLegoLeague/ms-logger)
 [![David Dev Dependency Status](https://david-dm.org/FirstLegoLeague/ms-logger/dev-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger#info=devDependencies)
-[![peerDependencies Status](https://david-dm.org/FirstLegoLeague/ms-logger/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger?type=peer)
+[![David Peer Dependencies Status](https://david-dm.org/FirstLegoLeague/ms-logger/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger?type=peer)
 [![Build status](https://ci.appveyor.com/api/projects/status/p7n0tdhplvxd59rd/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-logger/branch/master)
 [![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-logger.svg)](https://github.com/FirstLegoLeague/ms-logger/blob/master/LICENSE)
 
