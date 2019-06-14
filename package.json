@@ -21,7 +21,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "on-finished": "^2.3.0",
-    "on-headers": "^1.0.1",
+    "on-headers": "^1.0.2",
     "router": "^1.3.3"
   },
   "devDependencies": {
@@ -34,11 +34,11 @@
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-chai-expect": "^2.0.1",
     "eslint-plugin-chai-friendly": "^0.4.1",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "express": "^4.17.0",
+    "express": "^4.17.1",
     "mocha": "^6.0.2",
     "moxios": "^0.4.0",
     "nyc": "^13.3.0",
