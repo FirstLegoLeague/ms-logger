@@ -75,7 +75,7 @@ describe('Logger', () => {
       const logger = new Logger()
       const logJson = {
         'timestamp': new Date(MOCK_DATE).toISOString(),
-        'level': LOG_LEVELS.LOG_LEVELS_TRANSLATION[LOG_LEVELS.DEBUG],
+        'level': LOG_LEVELS.LOG_LEVEL_NAMES[LOG_LEVELS.DEBUG],
         'module': MODULE_NAME,
         'correlationId': CORRELATION_ID,
         'message': 'message'
