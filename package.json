@@ -11,7 +11,7 @@
     "lib/**/*.js"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.x"
   },
   "scripts": {
     "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
