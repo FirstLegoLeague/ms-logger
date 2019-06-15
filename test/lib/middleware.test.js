@@ -1,11 +1,12 @@
 const chai = require('chai')
-const spies = require('chai-spies')
+const sinon = require('sinon')
+const sinonChai = require('sinon-chai')
 const proxyquire = require('proxyquire')
 const express = require('express')
 const request = require('supertest')
 
 const expect = chai.expect
-chai.use(spies)
+chai.use(sinonChai)
 
 const mockLogger = {
   log: () => { },
@@ -29,12 +30,14 @@ const { middleware } = proxyquire('../../lib/middleware', {
 })
 
 describe('middleware', () => {
+  const sandbox = sinon.createSandbox()
   const message = 'Some message'
-  const sandbox = chai.spy.sandbox()
   let app
 
   beforeEach(() => {
-    sandbox.on(mockLogger, ['log', 'debug', 'info', 'warn', 'error', 'fatal'])
+    ['log', 'debug', 'info', 'warn', 'error', 'fatal'].forEach(level => {
+      sandbox.spy(mockLogger, level)
+    })
     app = express()
     app.use(middleware)
   })
@@ -50,7 +53,7 @@ describe('middleware', () => {
         .send({ message })
         .expect(201)
         .then(() => {
-          expect(mockLogger.log).to.have.been.called.once
+          expect(mockLogger.log).to.have.been.calledOnce
         })
     })
 
@@ -60,11 +63,11 @@ describe('middleware', () => {
         .send({ message })
         .expect(201)
         .then(() => {
-          expect(mockLogger.debug).to.not.have.been.called()
-          expect(mockLogger.info).to.not.have.been.called()
-          expect(mockLogger.warn).to.have.been.called()
-          expect(mockLogger.error).to.not.have.been.called()
-          expect(mockLogger.fatal).to.not.have.been.called()
+          expect(mockLogger.debug).to.not.have.been.called
+          expect(mockLogger.info).to.not.have.been.called
+          expect(mockLogger.warn).to.have.been.called
+          expect(mockLogger.error).to.not.have.been.called
+          expect(mockLogger.fatal).to.not.have.been.called
         })
     })
 
@@ -74,11 +77,11 @@ describe('middleware', () => {
         .send({ message })
         .expect(201)
         .then(() => {
-          expect(mockLogger.debug).to.not.have.been.called()
-          expect(mockLogger.info).to.have.been.called()
-          expect(mockLogger.warn).to.not.have.been.called()
-          expect(mockLogger.error).to.not.have.been.called()
-          expect(mockLogger.fatal).to.not.have.been.called()
+          expect(mockLogger.debug).to.not.have.been.called
+          expect(mockLogger.info).to.have.been.called
+          expect(mockLogger.warn).to.not.have.been.called
+          expect(mockLogger.error).to.not.have.been.called
+          expect(mockLogger.fatal).to.not.have.been.called
         })
     })
 
@@ -103,7 +106,7 @@ describe('middleware', () => {
     beforeEach(() => {
       status = 200
       app.use((req, res) => res.sendStatus(status))
-      mockLogger.debug = chai.spy(msg => {
+      mockLogger.debug = sinon.spy(msg => {
         logMessage = msg
         originalDebug.call(this, arguments)
       })
@@ -119,7 +122,7 @@ describe('middleware', () => {
         .send({ message })
         .expect(status)
         .then(() => {
-          expect(mockLogger.log).to.have.been.called.once
+          expect(mockLogger.log).to.have.been.calledOnce
         })
     })
 
@@ -128,11 +131,11 @@ describe('middleware', () => {
         .get('/some_path')
         .expect(status)
         .then(() => {
-          expect(mockLogger.debug).to.have.been.called()
-          expect(mockLogger.info).to.not.have.been.called()
-          expect(mockLogger.warn).to.not.have.been.called()
-          expect(mockLogger.error).to.not.have.been.called()
-          expect(mockLogger.fatal).to.not.have.been.called()
+          expect(mockLogger.debug).to.have.been.called
+          expect(mockLogger.info).to.not.have.been.called
+          expect(mockLogger.warn).to.not.have.been.called
+          expect(mockLogger.error).to.not.have.been.called
+          expect(mockLogger.fatal).to.not.have.been.called
         })
     })
 
@@ -142,11 +145,11 @@ describe('middleware', () => {
         .get('/some_path')
         .expect(status)
         .then(() => {
-          expect(mockLogger.debug).to.not.have.been.called()
-          expect(mockLogger.info).to.not.have.been.called()
-          expect(mockLogger.warn).to.have.been.called()
-          expect(mockLogger.error).to.not.have.been.called()
-          expect(mockLogger.fatal).to.not.have.been.called()
+          expect(mockLogger.debug).to.not.have.been.called
+          expect(mockLogger.info).to.not.have.been.called
+          expect(mockLogger.warn).to.have.been.called
+          expect(mockLogger.error).to.not.have.been.called
+          expect(mockLogger.fatal).to.not.have.been.called
         })
     })
 
@@ -156,17 +159,17 @@ describe('middleware', () => {
         .get('/some_path')
         .expect(status)
         .then(() => {
-          expect(mockLogger.debug).to.not.have.been.called()
-          expect(mockLogger.info).to.not.have.been.called()
-          expect(mockLogger.warn).to.not.have.been.called()
-          expect(mockLogger.error).to.have.been.called()
-          expect(mockLogger.fatal).to.not.have.been.called()
+          expect(mockLogger.debug).to.not.have.been.called
+          expect(mockLogger.info).to.not.have.been.called
+          expect(mockLogger.warn).to.not.have.been.called
+          expect(mockLogger.error).to.have.been.called
+          expect(mockLogger.fatal).to.not.have.been.called
         })
     })
 
     it('only calls Logger creation once', () => {
       const originalMockLogger = MockLogger
-      MockLogger = chai.spy(MockLogger)
+      MockLogger = sinon.spy(MockLogger)
       app = express()
       app.use((req, res, next) => {
         req.logger = mockLogger
@@ -179,7 +182,7 @@ describe('middleware', () => {
         .get('/some_path')
         .expect(status)
         .then(() => {
-          expect(MockLogger).to.not.have.been.called()
+          expect(MockLogger).to.not.have.been.called
           MockLogger = originalMockLogger
         })
     })
