@@ -14,7 +14,9 @@
     "node": ">=8.x"
   },
   "scripts": {
-    "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
+    "test": "cross-env SECRET=mock_secret PORT=0000 mocha --recursive",
+    "test:coverage": "nyc -n=lib/**/*.js --reporter=text yarn test",
+    "test:ci": "nyc -n=lib/**/*.js --reporter=lcov yarn test && codecov",
     "lint": "eslint --ext .js ./",
     "lint:fix": "eslint --ext .js --fix ./"
   },
@@ -28,6 +30,7 @@
     "@first-lego-league/eslint-config": "^1.0.0",
     "@first-lego-league/ms-correlation": "1.0.1",
     "chai": "^4.2.0",
+    "codecov": "^3.5.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
