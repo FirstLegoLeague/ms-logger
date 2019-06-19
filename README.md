@@ -1,9 +1,11 @@
 [![npm](https://img.shields.io/npm/v/@first-lego-league/ms-logger.svg)](https://www.npmjs.com/package/@first-lego-league/ms-logger)
+[![codecov](https://codecov.io/gh/FirstLegoLeague/ms-logger/branch/master/graph/badge.svg)](https://codecov.io/gh/FirstLegoLeague/ms-logger)
+[![Build status](https://ci.appveyor.com/api/projects/status/p7n0tdhplvxd59rd/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-logger/branch/master)
+[![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-logger.svg)](https://github.com/FirstLegoLeague/ms-logger/blob/master/LICENSE)
+
 [![David Dependency Status](https://david-dm.org/FirstLegoLeague/ms-logger.svg)](https://david-dm.org/FirstLegoLeague/ms-logger)
 [![David Dev Dependency Status](https://david-dm.org/FirstLegoLeague/ms-logger/dev-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger#info=devDependencies)
 [![David Peer Dependencies Status](https://david-dm.org/FirstLegoLeague/ms-logger/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger?type=peer)
-[![Build status](https://ci.appveyor.com/api/projects/status/p7n0tdhplvxd59rd/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-logger/branch/master)
-[![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-logger.svg)](https://github.com/FirstLegoLeague/ms-logger/blob/master/LICENSE)
 
 ## FIRST Lego League Logger
 A simple logger object used to write logs according to the _FIRST_ LEGO League TMS [Module Standard](https://github.com/FirstLegoLeagueIL/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#log-messages). The logger was meant to be used by node servers.

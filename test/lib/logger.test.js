@@ -21,20 +21,52 @@ const { Logger } = proxyquire('../../lib/logger', {
   }
 })
 
+function env (environment, callback) {
+  const originalEnv = Object.assign({}, process.env)
+  try {
+    Object.assign(process.env, environment)
+    return callback()
+  } finally {
+    process.env = originalEnv
+  }
+}
+
 describe('Logger', () => {
   it('has a default level of DEBUG', () => {
     expect(new Logger().logLevel).to.equal(LOG_LEVELS.DEBUG)
   })
 
-  it('sets the log level if its valid', () => {
+  it('has a default level of process.env.LOG_LEVEL', () => {
+    env({ LOG_LEVEL: 'info' }, () => {
+      expect(new Logger().logLevel).to.equal(LOG_LEVELS.INFO)
+    })
+  })
+
+  it('sets the log level if its a valid number', () => {
     const logger = new Logger()
-    logger.logLevel = LOG_LEVELS.INFO
+    logger.logLevel = 3
+    expect(logger.logLevel).to.equal(3)
+  })
+
+  it('sets the log level if its a valid string', () => {
+    const logger = new Logger()
+    logger.logLevel = 'info'
     expect(logger.logLevel).to.equal(LOG_LEVELS.INFO)
   })
 
   it('throws an error if the log level is not one of the allowed log levels', () => {
     const logger = new Logger()
     expect(() => { logger.logLevel = -5 }).to.throw()
+  })
+
+  it('throws an error if the log level unknown', () => {
+    const logger = new Logger()
+    expect(() => { logger.logLevel = 'unknown' }).to.throw()
+  })
+
+  it('throws a type error if the log level is not a integer or a string', () => {
+    const logger = new Logger()
+    expect(() => { logger.logLevel = ['not a number or string'] }).to.throw(TypeError)
   })
 
   describe('log', () => {
@@ -52,36 +84,37 @@ describe('Logger', () => {
 
     it('does not log if the level is lower then the logger\'s level', () => {
       const logger = new Logger()
-      logger.logLevel = LOG_LEVELS.WARN
-      logger.log(LOG_LEVELS.INFO, 'Some Log')
+      logger.logLevel = 4
+      logger.log(3, 'Some Log')
       expect(console.log).to.not.have.been.called
     })
 
     it('logs if the level is equal to the logger\'s level', () => {
       const logger = new Logger()
-      logger.logLevel = LOG_LEVELS.WARN
-      logger.log(LOG_LEVELS.WARN, 'Some Log')
+      logger.logLevel = 4
+      logger.log(4, 'Some Log')
       expect(console.log).to.have.been.calledOnce
     })
 
     it('logs if the level is higher then the logger\'s level', () => {
       const logger = new Logger()
-      logger.logLevel = LOG_LEVELS.WARN
-      logger.log(LOG_LEVELS.FATAL, 'Some Log')
+      logger.logLevel = 3
+      logger.log(5, 'Some Log')
       expect(console.log).to.have.been.calledOnce
     })
 
     it('logs the formatter log according the logger\'s value formatting method', () => {
       const logger = new Logger()
+      const logLevel = 0
       const logJson = {
         'timestamp': new Date(MOCK_DATE).toISOString(),
-        'level': LOG_LEVELS.LOG_LEVEL_NAMES[LOG_LEVELS.DEBUG],
+        'level': LOG_LEVELS.LOG_LEVEL_NAMES[logLevel],
         'module': MODULE_NAME,
         'correlationId': CORRELATION_ID,
         'message': 'message'
       }
       const stringifiedFormttedLog = JSON.stringify(logJson)
-      logger.log(LOG_LEVELS.DEBUG, 'message')
+      logger.log(logLevel, 'message')
       expect(console.log).to.have.been.calledWith(stringifiedFormttedLog)
     })
   })
