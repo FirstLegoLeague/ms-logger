@@ -1,6 +1,5 @@
 {
   "name": "@first-lego-league/ms-logger",
-  "version": "1.5.1",
   "description": "Logger for FIRST Lego League System Modules",
   "version": "2.0.0",
   "main": "index.js",
