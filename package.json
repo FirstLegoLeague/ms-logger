@@ -1,7 +1,7 @@
 {
   "name": "@first-lego-league/ms-logger",
   "description": "Logger for FIRST Lego League System Modules",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "index.js",
   "repository": "https://github.com/FirstLegoLeague/ms-logger.git",
   "author": "Tal Taub",
