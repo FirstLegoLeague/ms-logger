@@ -8,7 +8,7 @@
 [![David Peer Dependencies Status](https://david-dm.org/FirstLegoLeague/ms-logger/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-logger?type=peer)
 
 # FIRST Lego League Logger
-A simple logger which works according to the _FIRST_ LEGO League TMS [Module Standard](https://github.com/FirstLegoLeagueIL/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#log-messages).
+A logger package, working according to the _FIRST_ LEGO League TMS [Module Standard logging section](https://github.com/FirstLegoLeague/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#log-messages).
 
 ## Usage
 There are two ways to use the module: creating the logger directly ot using the middelware.
